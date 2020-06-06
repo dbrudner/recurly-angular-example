@@ -8,7 +8,7 @@
 <section id="errors" class="errors"></section>
 
 <section>
-  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <form #formRef (ngSubmit)="onSubmit()">
     <div>
       <label for="first_name">First Name</label>
       <input

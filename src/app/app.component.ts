@@ -1,24 +1,20 @@
 import {
-  Component,
   AfterViewInit,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
-
-import { NgForm } from '@angular/forms';
-import { ElementsInstance, CardElement } from '@recurly/recurly-js';
+import { CardElement, ElementsInstance } from '@recurly/recurly-js';
 
 @Component({
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements AfterViewInit, OnInit /*, OnDestroy*/ {
+export class AppComponent implements AfterViewInit, OnInit {
   @ViewChild('cardRef') cardRef: ElementRef;
-  @ViewChild('form', { read: ElementRef }) form: ElementRef;
-  cardHandler = this.onChange.bind(this);
+  @ViewChild('formRef', { read: ElementRef }) formRef: ElementRef;
   error: string;
   elements: ElementsInstance;
   card: CardElement;
@@ -28,7 +24,6 @@ export class AppComponent implements AfterViewInit, OnInit /*, OnDestroy*/ {
   }
   ngAfterViewInit() {
     this.elements = window.recurly.Elements();
-
     this.card = this.elements.CardElement({
       style: {
         fontFamily: 'Open Sans',
@@ -38,19 +33,18 @@ export class AppComponent implements AfterViewInit, OnInit /*, OnDestroy*/ {
       },
     });
     this.card.attach(this.cardRef.nativeElement);
-    this.card.on('change', console.log);
+    this.card.on('change', this.onChange);
   }
-  onChange({ error }) {
-    if (error) {
-      this.error = error.message;
-    } else {
-      this.error = null;
-    }
-    this.cd.detectChanges();
+  onChange(e) {
+    console.log(e);
   }
-  onSubmit(form: NgForm) {
-    recurly.token(this.elements, this.form.nativeElement, (err, token) => {
-      console.log(token);
+  onSubmit() {
+    recurly.token(this.elements, this.formRef.nativeElement, (err, token) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log(token);
+      }
     });
   }
 }
