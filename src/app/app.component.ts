@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   card: CardElement;
   constructor(private cd: ChangeDetectorRef) {}
   ngOnInit() {
-    window.recurly.configure('my-public-key');
+    window.recurly.configure('ewr1-BrfKUWEllwCxdpRZvZloaJ');
   }
   ngAfterViewInit() {
     this.elements = window.recurly.Elements();
@@ -43,7 +43,7 @@ export class AppComponent implements AfterViewInit, OnInit {
       if (err) {
         throw err;
       } else {
-        console.log(token);
+        alert(`Billing token: ${JSON.stringify(token)}`);
       }
     });
   }
